@@ -1,11 +1,8 @@
 package application;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Scanner;
 
-import model.entities.Reservation;
+import model.entities.Account;
 import model.exceptions.DomainException;
 
 public class Program {
@@ -14,34 +11,29 @@ public class Program {
 		
 		try {
 		Scanner sc = new Scanner(System.in);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		System.out.println("Which your Room number: ");
+		System.out.println("Digite o numero da conta: ");
 		int number = sc.nextInt();
-		System.out.println("Check-in date: (dd/MM/yyyy)");
-		Date checkIn = sdf.parse(sc.next());
-		System.out.println("Check-out date: (dd/MM/yyyy)");
-		Date checkOut = sdf.parse(sc.next());
+		sc.nextLine();
+		System.out.println("Digite o nome do proprietário: ");
+		String holder = sc.nextLine();
+		System.out.println("Insira o saldo inicial da conta: ");
+		double balance = sc.nextDouble();
+		System.out.println("Insira o limite de saque diário: ");
+		double limitWithdraw = sc.nextDouble();
 		
-		Reservation res = new Reservation(number, checkIn, checkOut);
-		System.out.println(res);
+		Account acc = new Account(number, holder, balance, limitWithdraw);
+		System.out.println("New Balance: " + acc.getBalance());
 		
-		System.out.println("Updating Date, Check-in date: (dd/MM/yyyy)");
-		checkIn = sdf.parse(sc.next());
-		System.out.println("Check-out date: (dd/MM/yyyy)");
-		checkOut = sdf.parse(sc.next());
-		
-		res.updateDate(checkIn, checkOut);
-		
-		System.out.println(res);
+		System.out.println("Entre com a quantia que deseja sacar: ");
+		double withdraw = sc.nextDouble();
+		acc.setBalance(withdraw);
+		System.out.println("New Balance: " + acc.getBalance());
 		
 		sc.close();
-	    }
-		catch(ParseException e) {
-	    	System.out.println("Invalid Date Format");
-	    }
-		catch(DomainException e) {
-			System.out.println("Error in reservation: " + e.getMessage());
+		} 
+		catch (DomainException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 }
